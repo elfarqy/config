@@ -47,19 +47,29 @@ vim.opt.termguicolors = true    -- Enable true color support
 vim.opt.signcolumn = "yes"      -- Always show sign column (prevents text shifting)
 vim.opt.cursorline = true       -- Highlight current line
 
--- Clipboard (OSC 52 for SSH/remote sessions — works with Alacritty)
+-- Clipboard (OSC 52 for SSH/remote sessions — works with Alacritty + tmux)
+vim.opt.clipboard = "unnamedplus"
 vim.g.clipboard = {
   name = "OSC 52",
   copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    ["+"] = function(lines, _) vim.fn.setreg("+", table.concat(lines, "\n")) end,
+    ["*"] = function(lines, _) vim.fn.setreg("*", table.concat(lines, "\n")) end,
   },
   paste = {
-    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    ["+"] = function() return vim.fn.split(vim.fn.getreg("+"), "\n") end,
+    ["*"] = function() return vim.fn.split(vim.fn.getreg("*"), "\n") end,
   },
 }
-vim.opt.clipboard = "unnamedplus"
+
+-- Send OSC 52 sequence on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    local text = table.concat(vim.v.event.regcontents, "\n")
+    local encoded = vim.base64.encode(text)
+    io.write(string.format("\x1b]52;c;%s\x07", encoded))
+    io.flush()
+  end,
+})
 
 -- Performance
 vim.opt.updatetime = 300        -- Faster completion (default is 4000ms)
