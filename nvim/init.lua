@@ -47,8 +47,19 @@ vim.opt.termguicolors = true    -- Enable true color support
 vim.opt.signcolumn = "yes"      -- Always show sign column (prevents text shifting)
 vim.opt.cursorline = true       -- Highlight current line
 
--- Clipboard
-vim.opt.clipboard = "unnamedplus" -- Sync yank/paste with system clipboard
+-- Clipboard (OSC 52 for SSH/remote sessions — works with Alacritty)
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+  },
+}
+vim.opt.clipboard = "unnamedplus"
 
 -- Performance
 vim.opt.updatetime = 300        -- Faster completion (default is 4000ms)
