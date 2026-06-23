@@ -61,7 +61,6 @@ vim.g.clipboard = {
   },
 }
 
--- Send OSC 52 sequence on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     local text = table.concat(vim.v.event.regcontents, "\n")
