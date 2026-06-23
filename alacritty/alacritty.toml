@@ -1,0 +1,78 @@
+# Nord theme for Alacritty with CaskaydiaCove Nerd Font ExtraLight
+
+[font]
+size = 11.0
+
+[terminal]
+osc52 = "CopyPaste"
+
+[font.normal]
+family = "CaskaydiaCove Nerd Font"
+style = "SemiLight"
+
+[font.bold]
+family = "CaskaydiaCove Nerd Font"
+style = "SemiBold"
+
+[font.italic]
+family = "CaskaydiaCove Nerd Font"
+style = "SemiLight Italic"
+
+[font.bold_italic]
+family = "CaskaydiaCove Nerd Font"
+style = "SemiBold Italic"
+
+# Nord Colors
+[colors.primary]
+background = "0x2E3440"
+foreground = "0xD8DEE9"
+
+
+[colors.cursor]
+text = "0x2E3440"
+cursor = "0xD8DEE9"
+
+[colors.selection]
+text = "0x2E3440"
+background = "0x88C0D0"
+
+[colors.normal]
+black =   "0x4C566A"
+red =     "0xBF616A"
+green =   "0xA3BE8C"
+yellow =  "0xEBCB8B"
+blue =    "0x5E81AC"
+magenta = "0xB48EAD"
+cyan =    "0x88C0D0"
+white =   "0xE5E9F0"
+
+[colors.bright]
+black =   "0x7B88A1"
+red =     "0xBF616A"
+green =   "0xA3BE8C"
+yellow =  "0xEBCB8B"
+blue =    "0x81A1C1"
+magenta = "0xB48EAD"
+cyan =    "0x8FBCBB"
+white =   "0xECEFF4"
+
+[window.padding]
+x = 4
+y = 4
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[cursor.style]
+shape = "Block"
+blinking = "On"
+
+[cursor]
+blink_interval = 500
+unfocused_hollow = true
+
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+color = "0x88C0D0"

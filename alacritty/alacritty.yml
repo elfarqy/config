@@ -1,0 +1,104 @@
+# Nord theme for Alacritty terminal with CASKAYDIA COVE THIN
+# Save as: ~/.config/alacritty/alacritty.yml
+
+# ==============================================================================
+# FONT: Caskaydia Cove Thin
+# ==============================================================================
+
+font:
+  normal:
+    family: Caskaydia Cove
+    style: Thin
+
+  bold:
+    family: Caskaydia Cove
+    style: SemiBold
+
+  italic:
+    family: Caskaydia Cove
+    style: Thin Italic
+
+  bold_italic:
+    family: Caskaydia Cove
+    style: SemiBold Italic
+
+  size: 11.0
+
+# ==============================================================================
+# Nord Colors
+# ==============================================================================
+
+colors:
+  # Default colors
+  primary:
+    background: '0x2E3440'
+    foreground: '0xD8DEE9'
+
+  # Cursor
+  cursor:
+    text: '0x2E3440'
+    cursor: '0xD8DEE9'
+
+  # Selection
+  selection:
+    text: '0x2E3440'
+    background: '0x88C0D0'
+
+  # Normal colors (black remapped for readability)
+  normal:
+    black:   '0x4C566A'
+    red:     '0xBF616A'
+    green:   '0xA3BE8C'
+    yellow:  '0xEBCB8B'
+    blue:    '0x5E81AC'
+    magenta: '0xB48EAD'
+    cyan:    '0x88C0D0'
+    white:   '0xE5E9F0'
+
+  # Bright colors
+  bright:
+    black:   '0x7B88A1'
+    red:     '0xBF616A'
+    green:   '0xA3BE8C'
+    yellow:  '0xEBCB8B'
+    blue:    '0x81A1C1'
+    magenta: '0xB48EAD'
+    cyan:    '0x8FBCBB'
+    white:   '0xECEFF4'
+
+# ==============================================================================
+# Window
+# ==============================================================================
+
+window:
+  padding:
+    x: 4
+    y: 4
+
+# ==============================================================================
+# Scrollback
+# ==============================================================================
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+# ==============================================================================
+# Cursor
+# ==============================================================================
+
+cursor:
+  style:
+    shape: Block
+    blinking: On
+  blink_interval: 500
+  unfocused_hollow: true
+
+# ==============================================================================
+# Bell
+# ==============================================================================
+
+bell:
+  animation: EaseOutExpo
+  duration: 0
+  color: '0x88C0D0'
