@@ -61,12 +61,16 @@ vim.g.clipboard = {
   },
 }
 
+-- Send OSC 52 sequence on yank (writes to /dev/tty to bypass Neovim's stdout capture)
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     local text = table.concat(vim.v.event.regcontents, "\n")
     local encoded = vim.base64.encode(text)
-    io.write(string.format("\x1b]52;c;%s\x07", encoded))
-    io.flush()
+    local tty = io.open("/dev/tty", "w")
+    if tty then
+      tty:write(string.format("\x1b]52;c;%s\x07", encoded))
+      tty:close()
+    end
   end,
 })
 
