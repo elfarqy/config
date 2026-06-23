@@ -1,0 +1,6 @@
+os:
+  # Open files in the Neovim session that launched lazygit (via lazygit.nvim).
+  # $NVIM is set automatically by Neovim for processes it spawns.
+  edit: 'nvim --server "$NVIM" --remote-tab "{{filename}}"'
+  editAtLine: 'nvim --server "$NVIM" --remote-tab "{{filename}}"'
+  editAtLineAndWait: 'nvim --server "$NVIM" --remote-tab "{{filename}}"'
