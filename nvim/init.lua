@@ -47,32 +47,42 @@ vim.opt.termguicolors = true    -- Enable true color support
 vim.opt.signcolumn = "yes"      -- Always show sign column (prevents text shifting)
 vim.opt.cursorline = true       -- Highlight current line
 
--- Clipboard (OSC 52 for SSH/remote sessions — works with Alacritty + tmux)
+-- Clipboard (OSC 52 for SSH/remote sessions — works with any OSC-52 terminal
+-- such as Alacritty or kitty, forwarded through tmux).
+--
+-- copy:  writes an OSC 52 escape straight to the controlling terminal so the
+--        text lands in the *local* clipboard.
+-- paste: returns the last text copied this way from a local cache, rather than
+--        querying the terminal for its clipboard. Terminals rarely answer OSC 52
+--        read requests over SSH, and that unanswered query coming back empty was
+--        the old "Nothing in register" (E353) error on `p` after `y`.
 vim.opt.clipboard = "unnamedplus"
-vim.g.clipboard = {
-  name = "OSC 52",
-  copy = {
-    ["+"] = function(lines, _) vim.fn.setreg("+", table.concat(lines, "\n")) end,
-    ["*"] = function(lines, _) vim.fn.setreg("*", table.concat(lines, "\n")) end,
-  },
-  paste = {
-    ["+"] = function() return vim.fn.split(vim.fn.getreg("+"), "\n") end,
-    ["*"] = function() return vim.fn.split(vim.fn.getreg("*"), "\n") end,
-  },
-}
 
--- Send OSC 52 sequence on yank (writes to /dev/tty to bypass Neovim's stdout capture)
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    local text = table.concat(vim.v.event.regcontents, "\n")
-    local encoded = vim.base64.encode(text)
+local osc52_cache = {}
+
+local function osc52_copy(reg)
+  return function(lines, regtype)
+    osc52_cache[reg] = { lines, regtype }
+    local encoded = vim.base64.encode(table.concat(lines, "\n"))
     local tty = io.open("/dev/tty", "w")
     if tty then
       tty:write(string.format("\x1b]52;c;%s\x07", encoded))
       tty:close()
     end
-  end,
-})
+  end
+end
+
+local function osc52_paste(reg)
+  return function()
+    return osc52_cache[reg] or { { "" }, "v" }
+  end
+end
+
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = { ["+"] = osc52_copy("+"), ["*"] = osc52_copy("*") },
+  paste = { ["+"] = osc52_paste("+"), ["*"] = osc52_paste("*") },
+}
 
 -- Performance
 vim.opt.updatetime = 300        -- Faster completion (default is 4000ms)
