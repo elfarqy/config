@@ -72,6 +72,16 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git git-flow)
 
+# On remote / ephemeral servers the client terminal's terminfo (xterm-kitty,
+# alacritty, ...) is often missing, which makes tmux refuse to attach:
+#   "missing or unsuitable terminal: xterm-kitty"
+# Fall back to a universally-present entry in that case. Only triggers in an
+# SSH session whose $TERM has no terminfo here; local kitty keeps full
+# xterm-kitty capabilities. (If infocmp is absent, we also fall back — safe.)
+if [[ -n "$SSH_CONNECTION" ]] && ! infocmp "$TERM" &>/dev/null; then
+  export TERM=xterm-256color
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
